@@ -122,7 +122,7 @@ void Board::loadFEN(std::string fen) {
 	castlingAvailability.blackQueenSide = (fenFields[2][3] != '-') ? true : false;
 
 	enpassant64Index = algebraicNotationTo64Index(fenFields[3]);
-
+	//fucking hell causese error
 	halfmoveClock = std::stoi(fenFields[4]);
 	fullmoveNumber = std::stoi(fenFields[5]);
 
