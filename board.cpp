@@ -123,8 +123,8 @@ void Board::loadFEN(std::string fen) {
 
 	enpassant64Index = algebraicNotationTo64Index(fenFields[3]);
 
-	halfmoveClock = std::stoul(fenFields[4]);
-	fullmoveNumber = std::stoul(fenFields[5]);
+	halfmoveClock = std::stoi(fenFields[4]);
+	fullmoveNumber = std::stoi(fenFields[5]);
 
 
 }
