@@ -81,7 +81,7 @@ private:
 	unsigned int fullmoveNumber;
 
 public:
-	Board(const BoardConstructorArgs& args);
+	Board();
 
     void loadFEN(std::string fen);
     std::string getBoardAsFEN();
