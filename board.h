@@ -2,8 +2,11 @@
 #include <string>
 
 struct BoardConstructorArgs {
+};
 
-
+enum Colour {
+    black,
+    white
 };
 
 struct CastlingAvailability {
@@ -71,7 +74,7 @@ private:
     }; // 
 
 	
-	bool activeColour;
+	Colour activeColour;
 	CastlingAvailability castlingAvailability;
 	unsigned int enpassantSquareIndex;
 	unsigned int halfmoveClock;
