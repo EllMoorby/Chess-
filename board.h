@@ -76,7 +76,7 @@ private:
 	
 	Colour activeColour;
 	CastlingAvailability castlingAvailability;
-	unsigned int enpassantSquareIndex;
+	unsigned int enpassant64Index;
 	unsigned int halfmoveClock;
 	unsigned int fullmoveNumber;
 
@@ -86,6 +86,7 @@ public:
     void loadFEN(std::string fen);
     std::string getBoardAsFEN();
 
+    unsigned int algebraicNotationTo64Index(std::string square);
     void makeMove();
     void unmakeMove();
 
