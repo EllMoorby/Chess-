@@ -19,8 +19,8 @@ Menu::Menu(const MenuArgs& args) :
 	previousOptionIndex{ args.previousOptionIndex },
 	defaultColour{ args.defaultColour },
 	selectedOptionColour{ colours[args.selectedOptionColour] },
-	deselectedOptionColour{ colours[args.deselectedOptionColour] }
-
+	deselectedOptionColour{ colours[args.deselectedOptionColour] },
+	int num{ 5 };
 {}
 
 
