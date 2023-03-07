@@ -87,6 +87,7 @@ public:
     std::string getBoardAsFEN();
 
     unsigned int algebraicNotationTo64Index(std::string square);
+    void displayBoard();
     void makeMove();
     void unmakeMove();
 

@@ -1,4 +1,5 @@
 #include "board.h"
+#include <iostream>
 
 // "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
 // "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b ---- - 0 1"
@@ -129,11 +130,18 @@ void Board::loadFEN(std::string fen) {
 }
 
 std::string Board::getBoardAsFEN() {
-	//Code
+	return "a";
 }
 
 unsigned int Board::algebraicNotationTo64Index(std::string square) {
 	unsigned int file = square[0];
 	unsigned int rank = square[1];
 	return ((file - 97) + (8 * (56 - rank)));
+}
+
+void Board::displayBoard() {
+	for (auto& piecePlacementData : board) {
+		std::cout << piecePlacementData;
+
+	}
 }
