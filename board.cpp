@@ -8,7 +8,7 @@ Board::Board(){
 }
 
 void Board::loadFEN(std::string fen) {
-	//REQUIRES A SPACE AT END OF FEN
+	fen.append(" ");
 
 	Pieces board[64] = {
 		empty, empty, empty, empty, empty, empty, empty, empty,
