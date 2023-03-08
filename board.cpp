@@ -135,10 +135,10 @@ void Board::loadFEN(std::string fen) {
 std::string Board::getBoardAsFEN() {
 	std::string fen = "";
 	unsigned int count = 0;
-	unsigned int rowtotal = 0;
+	unsigned int rowTotal = 0;
 	for (auto& piecePlacementData : board) {
-		if (rowtotal == 8) {
-			rowtotal = 0;
+		if (rowTotal == 8) {
+			rowTotal = 0;
 			if (count > 0) {
 				fen.append(std::to_string(count));
 			}
@@ -152,61 +152,61 @@ std::string Board::getBoardAsFEN() {
 		
 		switch (piecePlacementData){
 			case blackKing:
-				rowtotal++;
+				rowTotal++;
 				fen.append("k");
 				break;
 			case blackQueen:
-				rowtotal++;
+				rowTotal++;
 				fen.append("q");
 				break;
 			case blackRook:
-				rowtotal++;
+				rowTotal++;
 				fen.append("r");
 				break;
 			case blackBishop:
-				rowtotal++;
+				rowTotal++;
 				fen.append("b");
 				break;
 			case blackKnight:
-				rowtotal++;
+				rowTotal++;
 				fen.append("n");
 				break;
 			case blackPawn:
-				rowtotal++;
+				rowTotal++;
 				fen.append("p");
 				break;
 			case whiteKing:
-				rowtotal++;
+				rowTotal++;
 				fen.append("K");
 				break;
 			case whiteQueen:
-				rowtotal++;
+				rowTotal++;
 				fen.append("Q");
 				break;
 			case whiteRook:
-				rowtotal++;
+				rowTotal++;
 				fen.append("R");
 				break;
 			case whiteBishop:
-				rowtotal++;
+				rowTotal++;
 				fen.append("B");
 				break;
 			case whiteKnight:
-				rowtotal++;
+				rowTotal++;
 				fen.append("N");
 				break;
 			case whitePawn:
-				rowtotal++;
+				rowTotal++;
 				fen.append("P");
 				break;
 			case empty:
 				if (count == 8) {
 					fen.append(std::to_string(count));
 					count = 0;
-					rowtotal = 0;
+					rowTotal = 0;
 				}
 				count++;
-				rowtotal++;
+				rowTotal++;
 		}
 	}
 	fen.append(" ");
@@ -254,5 +254,4 @@ void Board::displayBoard() {
 		}
 			
 	}
-	std::cout << std::endl << enpassant64Index << std::endl << halfmoveClock << std::endl<< fullmoveNumber;
 }
