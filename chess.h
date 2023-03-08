@@ -3,19 +3,20 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-struct RendererConstructorArgs {
+struct ChessConstructorArgs {
 	unsigned int screenHeight;
 	unsigned int screenWidth;
 	std::string texturePath;
 };
 
-class Renderer
+class Chess
 {
 private:
 	unsigned int screenHeight;
 	unsigned int screenWidth;
 	std::string texturePath;
-	sf::Window window;
+	sf::RenderWindow window;
+	sf::Event event;
 	
 	sf::Texture blackKing;
 	sf::Texture blackQueen;
@@ -29,12 +30,18 @@ private:
 	sf::Texture whiteBishop;
 	sf::Texture whiteKnight;
 	sf::Texture whitePawn;
+	sf::Texture board;
+
+	sf::Sprite boardSprite;
+	//test
+	sf::CircleShape shape;
 
 public:
-	Renderer(const RendererConstructorArgs& args);
+	Chess(const ChessConstructorArgs& args);
+	void start();
+	void update();
 	void createWindow();
 	void destroyWindow();
 	void draw(unsigned int x, unsigned int y, sf::Sprite sprite);
-
 };
 
