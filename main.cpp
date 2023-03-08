@@ -5,7 +5,9 @@
 int main()
 {
     Board board;
-    board.loadFEN("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 32 1 ");
-    std::string test = board.getBoardAsFEN();
+    board.loadFEN("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq g6 32 1 ");
+    board.displayBoard();
+    std::string currentFen = board.getBoardAsFEN();
+    std::cout << currentFen;
     return 0;
 }

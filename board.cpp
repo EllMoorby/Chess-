@@ -106,7 +106,6 @@ void Board::loadFEN(std::string fen) {
 				break;
 			case 'N':
 				this->board[currentIndex] = whiteKnight;
-				std::cout << this->board[currentIndex] << std::endl;
 				currentIndex++;
 				break;
 			case 'P':
@@ -210,12 +209,31 @@ std::string Board::getBoardAsFEN() {
 				rowtotal++;
 		}
 	}
+	fen.append(" ");
 	std::string fenActiveColour = (activeColour == black) ? "b" : "w";
 	fen.append(fenActiveColour);
+	fen.append(" ");
 	//Add castling rights to fen
+	fen.append((castlingAvailability.whiteKingSide == true) ? "K" : "-");
+	fen.append((castlingAvailability.whiteQueenSide == true) ? "Q" : "-");
+	fen.append((castlingAvailability.blackKingSide == true) ? "k" : "-");
+	fen.append((castlingAvailability.blackQueenSide == true) ? "q" : "-");
+	fen.append(" ");
 	//Add lastmove to fen
-	//Add halfmove clock
+	unsigned int index = enpassant64Index;
+	unsigned int units = 8-(index / 8);
+	char tens = char(index-units+87);
+	std::string output = "";
+	output.push_back(tens);
+	output.append(std::to_string(units));
+
+	fen.append(output);
+	fen.append(" ");
+		//Add halfmove clock
+	fen.append(std::to_string(halfmoveClock));
+	fen.append(" ");
 	//Add fullmove number
+	fen.append(std::to_string(fullmoveNumber));
 	return fen;
 }
 
@@ -226,8 +244,15 @@ unsigned int Board::algebraicNotationTo64Index(std::string square) {
 }
 
 void Board::displayBoard() {
+	unsigned int count = 0;
 	for (auto& piecePlacementData : board) {
+		count++;
 		std::cout << piecePlacementData;
+		if (count == 8) {
+			std::cout << std::endl;
+			count = 0;
+		}
+			
 	}
 	std::cout << std::endl << enpassant64Index << std::endl << halfmoveClock << std::endl<< fullmoveNumber;
 }
