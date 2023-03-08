@@ -14,6 +14,7 @@ class Renderer
 private:
 	unsigned int screenHeight;
 	unsigned int screenWidth;
+	std::string texturePath;
 	sf::Window window;
 	
 	sf::Texture blackKing;
@@ -30,7 +31,7 @@ private:
 	sf::Texture whitePawn;
 
 public:
-	Renderer(RendererConstructorArgs& args);
+	Renderer(const RendererConstructorArgs& args);
 	void createWindow();
 	void destroyWindow();
 	void draw(unsigned int x, unsigned int y, sf::Sprite sprite);
