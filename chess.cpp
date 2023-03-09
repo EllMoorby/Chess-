@@ -4,27 +4,32 @@ Chess::Chess(const ChessConstructorArgs& args):
 	screenWidth{ args.screenWidth },
 	texturePath{ args.texturePath }
 {
-	blackKing.loadFromFile(texturePath + "/blackKing.png");
-	blackQueen.loadFromFile(texturePath + "/blackQueen.png");
-	blackRook.loadFromFile(texturePath + "/blackRook.png");
-	blackBishop.loadFromFile(texturePath + "/blackBishop.png");
-	blackKnight.loadFromFile(texturePath + "/blackKnight.png");
-	blackPawn.loadFromFile(texturePath + "/blackPawn.png");
-	whiteKing.loadFromFile(texturePath + "/whiteKing.png");
-	whiteQueen.loadFromFile(texturePath + "/whiteQueen.png");
-	whiteRook.loadFromFile(texturePath + "/whiteRook.png");
-	whiteBishop.loadFromFile(texturePath + "/whiteBishop.png");
-	whiteKnight.loadFromFile(texturePath + "/whiteKnight.png");
-	whitePawn.loadFromFile(texturePath + "/whitePawn.png");
-	board.loadFromFile(texturePath + "/board.png");
+	blackKingImg.loadFromFile(texturePath + "/blackKing.png");
+	blackQueenImg.loadFromFile(texturePath + "/blackQueen.png");
+	blackRookImg.loadFromFile(texturePath + "/blackRook.png");
+	blackBishopImg.loadFromFile(texturePath + "/blackBishop.png");
+	blackKnightImg.loadFromFile(texturePath + "/blackKnight.png");
+	blackPawnImg.loadFromFile(texturePath + "/blackPawn.png");
+	whiteKingImg.loadFromFile(texturePath + "/whiteKing.png");
+	whiteQueenImg.loadFromFile(texturePath + "/whiteQueen.png");
+	whiteRookImg.loadFromFile(texturePath + "/whiteRook.png");
+	whiteBishopImg.loadFromFile(texturePath + "/whiteBishop.png");
+	whiteKnightImg.loadFromFile(texturePath + "/whiteKnight.png");
+	whitePawnImg.loadFromFile(texturePath + "/whitePawn.png");
+	boardImg.loadFromFile(texturePath + "/board.png");
 
-	boardSprite.setTexture(board);
+	boardSprite.setTexture(boardImg);
+
 }
 void Chess::createWindow() {
 	window.create(sf::VideoMode(screenWidth, screenHeight),"Chess-");
 }
 void Chess::destroyWindow() {
 	window.close();
+}
+
+void Chess::draw(sf::Sprite sprite) {
+	window.draw(sprite);
 }
 
 void Chess::update() {
@@ -35,12 +40,17 @@ void Chess::update() {
 			window.close();
 	}
 
-	window.clear();
-	window.draw(boardSprite);
-	window.display();
+	//window.clear();
+	//window.draw(boardSprite);
+	//window.display();
 
 }
-void Chess::start() {
+void Chess::start(Piece piece) {
+	//TEST
+	window.draw(boardSprite);
+	draw(piece.getSprite());
+	window.display();
+	//ENDTEST
 	while (window.isOpen()) {
 		update();
 	}
