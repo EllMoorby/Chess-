@@ -33,8 +33,6 @@ private:
 	sf::Texture board;
 
 	sf::Sprite boardSprite;
-	//test
-	sf::CircleShape shape;
 
 public:
 	Chess(const ChessConstructorArgs& args);
@@ -42,6 +40,7 @@ public:
 	void update();
 	void createWindow();
 	void destroyWindow();
+	void movePiece();
 	void draw(unsigned int x, unsigned int y, sf::Sprite sprite);
 };
 

@@ -18,10 +18,6 @@ Chess::Chess(const ChessConstructorArgs& args):
 	whitePawn.loadFromFile(texturePath + "/whitePawn.png");
 	board.loadFromFile(texturePath + "/board.png");
 
-	//test
-	shape.setRadius(100.f);
-	shape.setFillColor(sf::Color::Green);
-
 	boardSprite.setTexture(board);
 }
 void Chess::createWindow() {
