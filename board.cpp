@@ -11,19 +11,6 @@ Board::Board(const BoardConstructorArgs args) :
 	drawBoardOnScreenEnabled{ args.drawBoardOnScreenEnabled }
 {
 	std::cout << "In Board Constructor" << std::endl;
-
-	sf::Texture blackKingImg;
-	sf::Texture blackQueenImg;
-	sf::Texture blackRookImg;
-	sf::Texture blackBishopImg;
-	sf::Texture blackKnightImg;
-	sf::Texture blackPawnImg;
-	sf::Texture whiteKingImg;
-	sf::Texture whiteQueenImg;
-	sf::Texture whiteRookImg;
-	sf::Texture whiteBishopImg;
-	sf::Texture whiteKnightImg;
-	sf::Texture whitePawnImg;
 	
 	blackKingImg.loadFromFile(args.texturePath + "/blackKing.png");
 	blackQueenImg.loadFromFile(args.texturePath + "/blackQueen.png");
@@ -40,18 +27,16 @@ Board::Board(const BoardConstructorArgs args) :
 	
 	pieceToTextureDictionary[blackKing] = blackKingImg;
 	pieceToTextureDictionary[blackQueen] = blackQueenImg;
-	pieceToTextureDictionary[blackRook] = blackQueenImg;
+	pieceToTextureDictionary[blackRook] = blackRookImg;
 	pieceToTextureDictionary[blackBishop] = blackBishopImg;
 	pieceToTextureDictionary[blackKnight] = blackKnightImg;
 	pieceToTextureDictionary[blackPawn] = blackPawnImg;
 	pieceToTextureDictionary[whiteKing] = whiteKingImg;
 	pieceToTextureDictionary[whiteQueen] = whiteQueenImg;
-	pieceToTextureDictionary[whiteRook] = whiteQueenImg;
+	pieceToTextureDictionary[whiteRook] = whiteRookImg;
 	pieceToTextureDictionary[whiteBishop] = whiteBishopImg;
 	pieceToTextureDictionary[whiteKnight] = whiteKnightImg;
 	pieceToTextureDictionary[whitePawn] = whitePawnImg;
-	
-	
 	loadFEN(args.fen);
 }
 
@@ -299,7 +284,13 @@ void Board::updatePieceSprites(){
 	pieceSprites.clear();
 	unsigned int index{ 0 };
 	for (auto& square : board) {
-		pieceSprites.push_back(Piece({ index, square, pieceToTextureDictionary[square] }));
+		if (square != empty) {
+			sf::Sprite pieceSprite;
+			pieceSprite.setTexture(pieceToTextureDictionary[square]);
+			pieceSprites.push_back(Piece({ index, pieceSprite }));
+		}
+		
+		index++;
 	}
 }
 std::vector<Piece> Board::getPieceSprites() {

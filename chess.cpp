@@ -39,7 +39,8 @@ void Chess::update() {
 	window.display();
 
 }
-void Chess::start(Piece piece) {
+void Chess::start() {
+	board.updatePieceSprites();
 	while (window.isOpen()) {
 		update();
 	}

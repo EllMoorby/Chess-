@@ -1,13 +1,10 @@
 #include "piece.h"
-
-Piece::Piece(const PieceConstructorArgs& args):
-	index{args.index},
-	pieceType{args.pieceType}
+#include <SFML/Graphics.hpp>
+Piece::Piece(const PieceConstructorArgs& args) :
+	index{ args.index },
+	sprite{ args.sprite }
 {
-	int xPos = (index % 8)*60;
-	int yPos = (index / 8)*60;
-	sprite.setTexture(args.texture);
-	sprite.setPosition(xPos, yPos);
+	sprite.setPosition((index % 8) * 60, ((index - index % 8) / 8) * 60);
 }
 
 sf::Sprite Piece::getSprite() {

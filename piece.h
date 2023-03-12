@@ -1,11 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "board.h"
+#include "test.h"
 
 struct PieceConstructorArgs {
 	unsigned int index;
-	Pieces pieceType;
-	sf::Texture texture;
+	sf::Sprite sprite;
 };
 
 class Piece

@@ -10,7 +10,6 @@ int main()
 
     Chess chess({480, 480, texturePath});
     chess.createWindow();
-
-
+    chess.start();
     return 0;
 }

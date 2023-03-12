@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "test.h"
 #include "board.h"
 #include "piece.h"
 #include <iostream>
@@ -27,7 +28,7 @@ private:
 public:
 	//Can be moved to private with getters and setters
 	Chess(const ChessConstructorArgs& args);
-	void start(Piece piece);
+	void start();
 	void update();
 	void createWindow();
 	void destroyWindow();

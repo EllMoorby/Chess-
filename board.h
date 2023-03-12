@@ -1,9 +1,10 @@
 #pragma once
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <tuple>
 #include <vector>
 #include "piece.h"
+#include "test.h"
 #include <SFML/Graphics.hpp>
 
 struct BoardConstructorArgs {
@@ -12,39 +13,25 @@ struct BoardConstructorArgs {
     std::string texturePath;
 };
 
-enum Colour {
-    black,
-    white
-};
 
-struct CastlingAvailability {
-	bool whiteKingSide;
-	bool whiteQueenSide;
-	bool blackKingSide;
-	bool blackQueenSide;
-
-};
-
-enum Pieces {
-    blackKing = -6,
-    blackQueen,
-    blackRook,
-    blackBishop,
-    blackKnight,
-    blackPawn,
-    empty,
-    whitePawn,
-    whiteKnight,
-    whiteBishop,
-    whiteRook,
-    whiteQueen,
-    whiteKing
-};
 
 class Board {
 
-private:    
-    std::map<Pieces, sf::Texture> pieceToTextureDictionary;
+private:
+    sf::Texture blackKingImg;
+    sf::Texture blackQueenImg;
+    sf::Texture blackRookImg;
+    sf::Texture blackBishopImg;
+    sf::Texture blackKnightImg;
+    sf::Texture blackPawnImg;
+    sf::Texture whiteKingImg;
+    sf::Texture whiteQueenImg;
+    sf::Texture whiteRookImg;
+    sf::Texture whiteBishopImg;
+    sf::Texture whiteKnightImg;
+    sf::Texture whitePawnImg;
+    
+    /*std::map<Pieces, std::unique_ptr<sf::Texture>> pieceToTextureDictionary;*/
 
     const int mailbox120[120] = {
      99, 99, 99, 99, 99, 99, 99, 99, 99, 99,
@@ -94,7 +81,7 @@ private:
 public:
     Board();
     Board(const BoardConstructorArgs args);
-
+    std::unordered_map<Pieces, sf::Texture> pieceToTextureDictionary;
     void loadFEN(std::string fen);
     std::string getBoardAsFEN();
 
