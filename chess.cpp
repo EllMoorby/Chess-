@@ -1,23 +1,11 @@
 #include "Chess.h"
-Chess::Chess(const ChessConstructorArgs& args):
+Chess::Chess(const ChessConstructorArgs& args) :
 	screenHeight{ args.screenHeight },
 	screenWidth{ args.screenWidth },
 	texturePath{ args.texturePath }
 {
-	blackKingImg.loadFromFile(texturePath + "/blackKing.png");
-	blackQueenImg.loadFromFile(texturePath + "/blackQueen.png");
-	blackRookImg.loadFromFile(texturePath + "/blackRook.png");
-	blackBishopImg.loadFromFile(texturePath + "/blackBishop.png");
-	blackKnightImg.loadFromFile(texturePath + "/blackKnight.png");
-	blackPawnImg.loadFromFile(texturePath + "/blackPawn.png");
-	whiteKingImg.loadFromFile(texturePath + "/whiteKing.png");
-	whiteQueenImg.loadFromFile(texturePath + "/whiteQueen.png");
-	whiteRookImg.loadFromFile(texturePath + "/whiteRook.png");
-	whiteBishopImg.loadFromFile(texturePath + "/whiteBishop.png");
-	whiteKnightImg.loadFromFile(texturePath + "/whiteKnight.png");
-	whitePawnImg.loadFromFile(texturePath + "/whitePawn.png");
+	board.Board::Board({ "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", true, texturePath });
 	boardImg.loadFromFile(texturePath + "/board.png");
-
 	boardSprite.setTexture(boardImg);
 
 }
@@ -28,8 +16,14 @@ void Chess::destroyWindow() {
 	window.close();
 }
 
-void Chess::draw(sf::Sprite sprite) {
-	window.draw(sprite);
+void Chess::drawBoard() {
+	if (!board.getDrawBoardOnScreenEnabled()) {
+		return;
+	}
+	window.draw(boardSprite);
+	for (auto& piece : board.getPieceSprites()) {
+		window.draw(piece.getSprite());
+	}
 }
 
 void Chess::update() {
@@ -40,17 +34,12 @@ void Chess::update() {
 			window.close();
 	}
 
-	//window.clear();
-	//window.draw(boardSprite);
-	//window.display();
+	window.clear();
+	drawBoard();
+	window.display();
 
 }
 void Chess::start(Piece piece) {
-	//TEST
-	window.draw(boardSprite);
-	draw(piece.getSprite());
-	window.display();
-	//ENDTEST
 	while (window.isOpen()) {
 		update();
 	}

@@ -2,12 +2,12 @@
 
 Piece::Piece(const PieceConstructorArgs& args):
 	index{args.index},
-	pieceType{args.pieceType},
-	texture{args.texture}
+	pieceType{args.pieceType}
 {
-	xPos = (index % 8)*60;
-	yPos = (index / 8)*60;
-	sprite.setTexture(texture);
+	int xPos = (index % 8)*60;
+	int yPos = (index / 8)*60;
+	sprite.setTexture(args.texture);
+	sprite.setPosition(xPos, yPos);
 }
 
 sf::Sprite Piece::getSprite() {

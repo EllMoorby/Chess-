@@ -3,8 +3,56 @@
 
 // "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
 // "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b ---- - 0 1"
+Board::Board() {
 
-Board::Board(){
+}
+
+Board::Board(const BoardConstructorArgs args) :
+	drawBoardOnScreenEnabled{ args.drawBoardOnScreenEnabled }
+{
+	std::cout << "In Board Constructor" << std::endl;
+
+	sf::Texture blackKingImg;
+	sf::Texture blackQueenImg;
+	sf::Texture blackRookImg;
+	sf::Texture blackBishopImg;
+	sf::Texture blackKnightImg;
+	sf::Texture blackPawnImg;
+	sf::Texture whiteKingImg;
+	sf::Texture whiteQueenImg;
+	sf::Texture whiteRookImg;
+	sf::Texture whiteBishopImg;
+	sf::Texture whiteKnightImg;
+	sf::Texture whitePawnImg;
+	
+	blackKingImg.loadFromFile(args.texturePath + "/blackKing.png");
+	blackQueenImg.loadFromFile(args.texturePath + "/blackQueen.png");
+	blackRookImg.loadFromFile(args.texturePath + "/blackRook.png");
+	blackBishopImg.loadFromFile(args.texturePath + "/blackBishop.png");
+	blackKnightImg.loadFromFile(args.texturePath + "/blackKnight.png");
+	blackPawnImg.loadFromFile(args.texturePath + "/blackPawn.png");
+	whiteKingImg.loadFromFile(args.texturePath + "/whiteKing.png");
+	whiteQueenImg.loadFromFile(args.texturePath + "/whiteQueen.png");
+	whiteRookImg.loadFromFile(args.texturePath + "/whiteRook.png");
+	whiteBishopImg.loadFromFile(args.texturePath + "/whiteBishop.png");
+	whiteKnightImg.loadFromFile(args.texturePath + "/whiteKnight.png");
+	whitePawnImg.loadFromFile(args.texturePath + "/whitePawn.png");
+	
+	pieceToTextureDictionary[blackKing] = blackKingImg;
+	pieceToTextureDictionary[blackQueen] = blackQueenImg;
+	pieceToTextureDictionary[blackRook] = blackQueenImg;
+	pieceToTextureDictionary[blackBishop] = blackBishopImg;
+	pieceToTextureDictionary[blackKnight] = blackKnightImg;
+	pieceToTextureDictionary[blackPawn] = blackPawnImg;
+	pieceToTextureDictionary[whiteKing] = whiteKingImg;
+	pieceToTextureDictionary[whiteQueen] = whiteQueenImg;
+	pieceToTextureDictionary[whiteRook] = whiteQueenImg;
+	pieceToTextureDictionary[whiteBishop] = whiteBishopImg;
+	pieceToTextureDictionary[whiteKnight] = whiteKnightImg;
+	pieceToTextureDictionary[whitePawn] = whitePawnImg;
+	
+	
+	loadFEN(args.fen);
 }
 
 void Board::loadFEN(std::string fen) {
@@ -243,15 +291,24 @@ unsigned int Board::algebraicNotationTo64Index(std::string square) {
 	return ((file - 97) + (8 * (56 - rank)));
 }
 
-void Board::displayBoard() {
-	unsigned int count = 0;
-	for (auto& piecePlacementData : board) {
-		count++;
-		std::cout << piecePlacementData;
-		if (count == 8) {
-			std::cout << std::endl;
-			count = 0;
-		}
-			
+bool Board::getDrawBoardOnScreenEnabled() {
+	return drawBoardOnScreenEnabled;
+}
+
+void Board::updatePieceSprites(){
+	pieceSprites.clear();
+	unsigned int index{ 0 };
+	for (auto& square : board) {
+		pieceSprites.push_back(Piece({ index, square, pieceToTextureDictionary[square] }));
 	}
+}
+std::vector<Piece> Board::getPieceSprites() {
+	return pieceSprites;
+}
+
+void Board::displayBoard() {
+	if (!drawBoardOnScreenEnabled) {
+		return;
+	}
+
 }

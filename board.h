@@ -1,7 +1,15 @@
 #pragma once
+#include <map>
 #include <string>
+#include <tuple>
+#include <vector>
+#include "piece.h"
+#include <SFML/Graphics.hpp>
 
 struct BoardConstructorArgs {
+    std::string fen;
+    bool drawBoardOnScreenEnabled;
+    std::string texturePath;
 };
 
 enum Colour {
@@ -35,7 +43,9 @@ enum Pieces {
 
 class Board {
 
-private:
+private:    
+    std::map<Pieces, sf::Texture> pieceToTextureDictionary;
+
     const int mailbox120[120] = {
      99, 99, 99, 99, 99, 99, 99, 99, 99, 99,
      99, 99, 99, 99, 99, 99, 99, 99, 99, 99,
@@ -73,20 +83,25 @@ private:
         empty, empty, empty, empty, empty, empty, empty, empty
     }; // 
 
-	
+    bool drawBoardOnScreenEnabled;
 	Colour activeColour;
 	CastlingAvailability castlingAvailability;
 	unsigned int enpassant64Index;
 	unsigned int halfmoveClock;
 	unsigned int fullmoveNumber;
+    std::vector<Piece> pieceSprites;
 
 public:
-	Board();
+    Board();
+    Board(const BoardConstructorArgs args);
 
     void loadFEN(std::string fen);
     std::string getBoardAsFEN();
 
     unsigned int algebraicNotationTo64Index(std::string square);
+    void updatePieceSprites();
+    bool getDrawBoardOnScreenEnabled();
+    std::vector<Piece> getPieceSprites();
     void displayBoard();
     void makeMove();
     void unmakeMove();
