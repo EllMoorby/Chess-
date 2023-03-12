@@ -1,8 +1,6 @@
 #include "board.h"
 #include <iostream>
 
-// "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1"
-// "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b ---- - 0 1"
 Board::Board() {
 
 }
@@ -10,21 +8,37 @@ Board::Board() {
 Board::Board(const BoardConstructorArgs args) :
 	drawBoardOnScreenEnabled{ args.drawBoardOnScreenEnabled }
 {
-	std::cout << "In Board Constructor" << std::endl;
-	
-	blackKingImg.loadFromFile(args.texturePath + "/blackKing.png");
-	blackQueenImg.loadFromFile(args.texturePath + "/blackQueen.png");
-	blackRookImg.loadFromFile(args.texturePath + "/blackRook.png");
-	blackBishopImg.loadFromFile(args.texturePath + "/blackBishop.png");
-	blackKnightImg.loadFromFile(args.texturePath + "/blackKnight.png");
-	blackPawnImg.loadFromFile(args.texturePath + "/blackPawn.png");
-	whiteKingImg.loadFromFile(args.texturePath + "/whiteKing.png");
-	whiteQueenImg.loadFromFile(args.texturePath + "/whiteQueen.png");
-	whiteRookImg.loadFromFile(args.texturePath + "/whiteRook.png");
-	whiteBishopImg.loadFromFile(args.texturePath + "/whiteBishop.png");
-	whiteKnightImg.loadFromFile(args.texturePath + "/whiteKnight.png");
-	whitePawnImg.loadFromFile(args.texturePath + "/whitePawn.png");
-	
+	initialiseTextures(args.texturePath);
+	loadFEN(args.fen);
+}
+
+void Board::initialiseTextures(std::string texturePath) {
+	sf::Texture blackKingImg;
+	sf::Texture blackQueenImg;
+	sf::Texture blackRookImg;
+	sf::Texture blackBishopImg;
+	sf::Texture blackKnightImg;
+	sf::Texture blackPawnImg;
+	sf::Texture whiteKingImg;
+	sf::Texture whiteQueenImg;
+	sf::Texture whiteRookImg;
+	sf::Texture whiteBishopImg;
+	sf::Texture whiteKnightImg;
+	sf::Texture whitePawnImg;
+
+	blackKingImg.loadFromFile(texturePath + "/blackKing.png");
+	blackQueenImg.loadFromFile(texturePath + "/blackQueen.png");
+	blackRookImg.loadFromFile(texturePath + "/blackRook.png");
+	blackBishopImg.loadFromFile(texturePath + "/blackBishop.png");
+	blackKnightImg.loadFromFile(texturePath + "/blackKnight.png");
+	blackPawnImg.loadFromFile(texturePath + "/blackPawn.png");
+	whiteKingImg.loadFromFile(texturePath + "/whiteKing.png");
+	whiteQueenImg.loadFromFile(texturePath + "/whiteQueen.png");
+	whiteRookImg.loadFromFile(texturePath + "/whiteRook.png");
+	whiteBishopImg.loadFromFile(texturePath + "/whiteBishop.png");
+	whiteKnightImg.loadFromFile(texturePath + "/whiteKnight.png");
+	whitePawnImg.loadFromFile(texturePath + "/whitePawn.png");
+
 	pieceToTextureDictionary[blackKing] = blackKingImg;
 	pieceToTextureDictionary[blackQueen] = blackQueenImg;
 	pieceToTextureDictionary[blackRook] = blackRookImg;
@@ -37,13 +51,12 @@ Board::Board(const BoardConstructorArgs args) :
 	pieceToTextureDictionary[whiteBishop] = whiteBishopImg;
 	pieceToTextureDictionary[whiteKnight] = whiteKnightImg;
 	pieceToTextureDictionary[whitePawn] = whitePawnImg;
-	loadFEN(args.fen);
 }
 
 void Board::loadFEN(std::string fen) {
-	fen.append(" ");
+	fen.append(" "); // Space Added for Final FEN Split
 
-	Pieces board[64] = {
+	std::array<Pieces, 64> board = {
 		empty, empty, empty, empty, empty, empty, empty, empty,
 		empty, empty, empty, empty, empty, empty, empty, empty,
 		empty, empty, empty, empty, empty, empty, empty, empty,
@@ -53,9 +66,11 @@ void Board::loadFEN(std::string fen) {
 		empty, empty, empty, empty, empty, empty, empty, empty,
 		empty, empty, empty, empty, empty, empty, empty, empty
 	};
+	
+	//Board, ActiveColour, CastlingAvailability, EnpassantSquare, HalfmoveClock, FullmoveNumber
+	std::string fenFields[6]; 
 
-	std::string fenFields[6]; //fenBoard, fenActiveColour, fenCastlingAvailability, fenEnpassantSquare, fenHalfmoveClock, fenFullmoveNumber
-
+	//Splits FEN String into Fields by Splitting on a Space
 	int start = 0;
 	int end = fen.find(" ");
 	int currentField = 0;
@@ -67,6 +82,7 @@ void Board::loadFEN(std::string fen) {
 		currentField++;
 	}
 
+	
 	unsigned int currentIndex = 0;
 
 	for (auto& piecePlacementData : fenFields[0]) {
@@ -167,6 +183,8 @@ void Board::loadFEN(std::string fen) {
 
 std::string Board::getBoardAsFEN() {
 	std::string fen = "";
+	
+	//Add Piece Placement Data to FEN
 	unsigned int count = 0;
 	unsigned int rowTotal = 0;
 	for (auto& piecePlacementData : board) {
@@ -243,16 +261,20 @@ std::string Board::getBoardAsFEN() {
 		}
 	}
 	fen.append(" ");
+	
+	//Add Active Colour to FEN
 	std::string fenActiveColour = (activeColour == black) ? "b" : "w";
 	fen.append(fenActiveColour);
 	fen.append(" ");
-	//Add castling rights to fen
+	
+	//Add Castling Rights to FEN
 	fen.append((castlingAvailability.whiteKingSide == true) ? "K" : "-");
 	fen.append((castlingAvailability.whiteQueenSide == true) ? "Q" : "-");
 	fen.append((castlingAvailability.blackKingSide == true) ? "k" : "-");
 	fen.append((castlingAvailability.blackQueenSide == true) ? "q" : "-");
 	fen.append(" ");
-	//Add lastmove to fen
+	
+	//Add Last Pawn Move to FEN
 	unsigned int index = enpassant64Index;
 	unsigned int units = 8-(index / 8);
 	char tens = char(index-units+87);
@@ -262,10 +284,12 @@ std::string Board::getBoardAsFEN() {
 
 	fen.append(output);
 	fen.append(" ");
-		//Add halfmove clock
+	
+	//Add Halfmove Clock
 	fen.append(std::to_string(halfmoveClock));
 	fen.append(" ");
-	//Add fullmove number
+	
+	//Add Fullmove Number
 	fen.append(std::to_string(fullmoveNumber));
 	return fen;
 }
@@ -289,7 +313,6 @@ void Board::updatePieceSprites(){
 			pieceSprite.setTexture(pieceToTextureDictionary[square]);
 			pieceSprites.push_back(Piece({ index, pieceSprite }));
 		}
-		
 		index++;
 	}
 }
@@ -301,5 +324,5 @@ void Board::displayBoard() {
 	if (!drawBoardOnScreenEnabled) {
 		return;
 	}
-
+	updatePieceSprites();
 }

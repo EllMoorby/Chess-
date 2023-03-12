@@ -10,7 +10,6 @@ struct PieceConstructorArgs {
 class Piece
 {
 private:
-	unsigned int index;
 	sf::Sprite sprite;
 	Pieces pieceType;
 
@@ -18,6 +17,7 @@ public:
 	Piece(const PieceConstructorArgs& args);
 	bool getColour();
 	void getPosition(); //EDIT THIS LATER
+	void changePosition(unsigned int index);
 	sf::Sprite getSprite();
 };
 

@@ -1,5 +1,6 @@
 #pragma once
-#include <unordered_map>
+#include <array>
+#include <map>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -14,26 +15,13 @@ struct BoardConstructorArgs {
 };
 
 
-
 class Board {
 
 private:
-    sf::Texture blackKingImg;
-    sf::Texture blackQueenImg;
-    sf::Texture blackRookImg;
-    sf::Texture blackBishopImg;
-    sf::Texture blackKnightImg;
-    sf::Texture blackPawnImg;
-    sf::Texture whiteKingImg;
-    sf::Texture whiteQueenImg;
-    sf::Texture whiteRookImg;
-    sf::Texture whiteBishopImg;
-    sf::Texture whiteKnightImg;
-    sf::Texture whitePawnImg;
-    
-    /*std::map<Pieces, std::unique_ptr<sf::Texture>> pieceToTextureDictionary;*/
+ 
+    std::map<Pieces, sf::Texture> pieceToTextureDictionary;
 
-    const int mailbox120[120] = {
+    const std::array<int, 120> mailbox120 = {
      99, 99, 99, 99, 99, 99, 99, 99, 99, 99,
      99, 99, 99, 99, 99, 99, 99, 99, 99, 99,
      99,  0,  1,  2,  3,  4,  5,  6,  7, 99,
@@ -48,7 +36,7 @@ private:
      99, 99, 99, 99, 99, 99, 99, 99, 99, 99
     };
 
-    const int mailbox64[64] = {
+    const std::array<int, 64> mailbox64 = {
         21, 22, 23, 24, 25, 26, 27, 28,
         31, 32, 33, 34, 35, 36, 37, 38,
         41, 42, 43, 44, 45, 46, 47, 48,
@@ -59,7 +47,7 @@ private:
         91, 92, 93, 94, 95, 96, 97, 98
     };
 
-    Pieces board[64] = {
+    std::array<Pieces, 64> board = {
         empty, empty, empty, empty, empty, empty, empty, empty,
         empty, empty, empty, empty, empty, empty, empty, empty,
         empty, empty, empty, empty, empty, empty, empty, empty,
@@ -71,25 +59,30 @@ private:
     }; // 
 
     bool drawBoardOnScreenEnabled;
-	Colour activeColour;
+    std::vector<Piece> pieceSprites;
+    
+    Colour activeColour;
 	CastlingAvailability castlingAvailability;
 	unsigned int enpassant64Index;
 	unsigned int halfmoveClock;
 	unsigned int fullmoveNumber;
-    std::vector<Piece> pieceSprites;
+    
 
 public:
     Board();
     Board(const BoardConstructorArgs args);
-    std::unordered_map<Pieces, sf::Texture> pieceToTextureDictionary;
+    void initialiseTextures(std::string texturePath);
+    
     void loadFEN(std::string fen);
     std::string getBoardAsFEN();
-
+    
     unsigned int algebraicNotationTo64Index(std::string square);
     void updatePieceSprites();
+    void displayBoard();
+    
     bool getDrawBoardOnScreenEnabled();
     std::vector<Piece> getPieceSprites();
-    void displayBoard();
+    
     void makeMove();
     void unmakeMove();
 
