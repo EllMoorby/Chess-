@@ -1,6 +1,5 @@
 #pragma once
-#include <string>
-#include "test.h"
+#include "boardData.h"
 #include "board.h"
 #include "piece.h"
 #include <iostream>
@@ -12,11 +11,14 @@ struct ChessConstructorArgs {
 	unsigned int screenHeight;
 	unsigned int screenWidth;
 	std::string texturePath;
+	std::string fen;
 };
 
 class Chess
 {
 private:
+	std::string fen;
+	std::map<Pieces, sf::Texture> pieceToTextureDictionary;
 	Pieces pieceOnMouse;
 	unsigned int screenHeight;
 	unsigned int screenWidth;
@@ -29,6 +31,7 @@ private:
 
 public:
 	Chess(const ChessConstructorArgs& args);
+	void initialiseTextures(std::string texturePath);
 	void start();
 	void update();
 	void createWindow();

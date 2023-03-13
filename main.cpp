@@ -7,9 +7,8 @@
 int main()
 {
     std::string texturePath = "assets/textures";
-
-    Chess chess({480, 480, texturePath});
-    chess.createWindow();
+    std::string fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    Chess chess({480, 480, texturePath, fen});
     chess.start();
     return 0;
 }

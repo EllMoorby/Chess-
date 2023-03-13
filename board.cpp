@@ -6,52 +6,13 @@ Board::Board() {
 }
 
 Board::Board(const BoardConstructorArgs args) :
-	drawBoardOnScreenEnabled{ args.drawBoardOnScreenEnabled }
+	drawBoardOnScreenEnabled{ args.drawBoardOnScreenEnabled },
+	pieceToTextureDictionary{ args.pieceToTextureDictionary }
 {
-	initialiseTextures(args.texturePath);
 	loadFEN(args.fen);
 }
 
-void Board::initialiseTextures(std::string texturePath) {
-	sf::Texture blackKingImg;
-	sf::Texture blackQueenImg;
-	sf::Texture blackRookImg;
-	sf::Texture blackBishopImg;
-	sf::Texture blackKnightImg;
-	sf::Texture blackPawnImg;
-	sf::Texture whiteKingImg;
-	sf::Texture whiteQueenImg;
-	sf::Texture whiteRookImg;
-	sf::Texture whiteBishopImg;
-	sf::Texture whiteKnightImg;
-	sf::Texture whitePawnImg;
 
-	blackKingImg.loadFromFile(texturePath + "/blackKing.png");
-	blackQueenImg.loadFromFile(texturePath + "/blackQueen.png");
-	blackRookImg.loadFromFile(texturePath + "/blackRook.png");
-	blackBishopImg.loadFromFile(texturePath + "/blackBishop.png");
-	blackKnightImg.loadFromFile(texturePath + "/blackKnight.png");
-	blackPawnImg.loadFromFile(texturePath + "/blackPawn.png");
-	whiteKingImg.loadFromFile(texturePath + "/whiteKing.png");
-	whiteQueenImg.loadFromFile(texturePath + "/whiteQueen.png");
-	whiteRookImg.loadFromFile(texturePath + "/whiteRook.png");
-	whiteBishopImg.loadFromFile(texturePath + "/whiteBishop.png");
-	whiteKnightImg.loadFromFile(texturePath + "/whiteKnight.png");
-	whitePawnImg.loadFromFile(texturePath + "/whitePawn.png");
-
-	pieceToTextureDictionary[blackKing] = blackKingImg;
-	pieceToTextureDictionary[blackQueen] = blackQueenImg;
-	pieceToTextureDictionary[blackRook] = blackRookImg;
-	pieceToTextureDictionary[blackBishop] = blackBishopImg;
-	pieceToTextureDictionary[blackKnight] = blackKnightImg;
-	pieceToTextureDictionary[blackPawn] = blackPawnImg;
-	pieceToTextureDictionary[whiteKing] = whiteKingImg;
-	pieceToTextureDictionary[whiteQueen] = whiteQueenImg;
-	pieceToTextureDictionary[whiteRook] = whiteRookImg;
-	pieceToTextureDictionary[whiteBishop] = whiteBishopImg;
-	pieceToTextureDictionary[whiteKnight] = whiteKnightImg;
-	pieceToTextureDictionary[whitePawn] = whitePawnImg;
-}
 
 void Board::loadFEN(std::string fen) {
 	fen.append(" "); // Space Added for Final FEN Split
@@ -337,4 +298,43 @@ Pieces Board::pieceAtIndex(unsigned int index) {
 
 void Board::addPieceToIndex(unsigned int index, Pieces piece) {
 	board[index] = piece;
+}
+
+std::vector<Move> Board::generatePsuedoLegalMoves() {
+	std::vector<Move> psuedoLegalMoves;
+	unsigned int pieceIndex{ 0 };
+
+	// Up Down Left Right UpLeft UpRight DownLeft DownRight 
+	std::array<int, 8> directionalOffsets64 = {-8, 8, -1, 1, -9, -7, 7, 9}; 
+	std::array<int, 8> directionalOffsets120 = {-10, 10, -1, 1, -11, -9, 9, 11};
+	
+	for (auto& square : board) {
+
+		if (square == empty) {
+			pieceIndex++;
+			continue;
+		}
+		switch (square) {
+		case blackKing:
+		case whiteKing:
+			std::cout << "King" << pieceIndex << std::endl;
+			for (auto& directionalOffset120 : directionalOffsets120) {
+				unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120] };
+				
+
+				if ( finish64Index != 99 && ((board[pieceIndex] * board[finish64Index]) <= 0)) {
+					psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
+					std::cout << finish64Index << std::endl;
+				}
+				
+			}
+			
+			break;
+
+
+
+		}
+	pieceIndex++;
+	}
+	return psuedoLegalMoves;
 }

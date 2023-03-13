@@ -1,30 +1,42 @@
 #pragma once
 #include <array>
-#include <map>
 #include <string>
 #include <tuple>
 #include <vector>
 #include "piece.h"
-#include "test.h"
+#include "boardData.h"
 #include <SFML/Graphics.hpp>
 
 struct BoardConstructorArgs {
     std::string fen;
     bool drawBoardOnScreenEnabled;
-    std::string texturePath;
+    std::map<Pieces, sf::Texture> pieceToTextureDictionary;
+};
+
+struct Move {
+    unsigned int startIndex64;
+    unsigned int finishIndex64;
+};
+
+enum MovementOffsets {
+    positiveXOffset120 = 1,
+    positiveXOffset64 = 1,
+    
+    //Positive Y Offset Moves Down the Board
+    positiveYOffset120 = 10,
+    positiveYOffset64 = 8
 };
 
 
 class Board {
 
 private:
- 
     std::map<Pieces, sf::Texture> pieceToTextureDictionary;
-
-    const std::array<int, 120> mailbox120 = {
+    
+    const std::array<unsigned int, 120> mailbox120 = {
      99, 99, 99, 99, 99, 99, 99, 99, 99, 99,
      99, 99, 99, 99, 99, 99, 99, 99, 99, 99,
-     99,  0,  1,  2,  3,  4,  5,  6,  7, 99,
+     99,  0,  1,  2,  3,  4, 5,  6,  7, 99,
      99,  8,  9, 10, 11, 12, 13, 14, 15, 99,
      99, 16, 17, 18, 19, 20, 21, 22, 23, 99,
      99, 24, 25, 26, 27, 28, 29, 30, 31, 99,
@@ -36,7 +48,7 @@ private:
      99, 99, 99, 99, 99, 99, 99, 99, 99, 99
     };
 
-    const std::array<int, 64> mailbox64 = {
+    const std::array<unsigned int, 64> mailbox64 = {
         21, 22, 23, 24, 25, 26, 27, 28,
         31, 32, 33, 34, 35, 36, 37, 38,
         41, 42, 43, 44, 45, 46, 47, 48,
@@ -86,6 +98,7 @@ public:
     bool getDrawBoardOnScreenEnabled();
     std::vector<Piece> getPieceSprites();
     
+    std::vector<Move> generatePsuedoLegalMoves();
     void makeMove();
     void unmakeMove();
 

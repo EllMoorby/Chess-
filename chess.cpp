@@ -2,16 +2,61 @@
 Chess::Chess(const ChessConstructorArgs& args) :
 	screenHeight{ args.screenHeight },
 	screenWidth{ args.screenWidth },
-	texturePath{ args.texturePath }
+	texturePath{ args.texturePath },
+	fen{ args.fen }
 {
-	board.Board::Board({ "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2", true, texturePath });
+	createWindow();
+	board.Board::Board({ fen, true, pieceToTextureDictionary});
 	boardImg.loadFromFile(texturePath + "/board.png");
 	boardSprite.setTexture(boardImg);
 	pieceOnMouse = empty;
 
 }
+
+void Chess::initialiseTextures(std::string texturePath) {
+	sf::Texture blackKingImg;
+	sf::Texture blackQueenImg;
+	sf::Texture blackRookImg;
+	sf::Texture blackBishopImg;
+	sf::Texture blackKnightImg;
+	sf::Texture blackPawnImg;
+	sf::Texture whiteKingImg;
+	sf::Texture whiteQueenImg;
+	sf::Texture whiteRookImg;
+	sf::Texture whiteBishopImg;
+	sf::Texture whiteKnightImg;
+	sf::Texture whitePawnImg;
+
+	blackKingImg.loadFromFile(texturePath + "/blackKing.png");
+	blackQueenImg.loadFromFile(texturePath + "/blackQueen.png");
+	blackRookImg.loadFromFile(texturePath + "/blackRook.png");
+	blackBishopImg.loadFromFile(texturePath + "/blackBishop.png");
+	blackKnightImg.loadFromFile(texturePath + "/blackKnight.png");
+	blackPawnImg.loadFromFile(texturePath + "/blackPawn.png");
+	whiteKingImg.loadFromFile(texturePath + "/whiteKing.png");
+	whiteQueenImg.loadFromFile(texturePath + "/whiteQueen.png");
+	whiteRookImg.loadFromFile(texturePath + "/whiteRook.png");
+	whiteBishopImg.loadFromFile(texturePath + "/whiteBishop.png");
+	whiteKnightImg.loadFromFile(texturePath + "/whiteKnight.png");
+	whitePawnImg.loadFromFile(texturePath + "/whitePawn.png");
+
+	pieceToTextureDictionary[blackKing] = blackKingImg;
+	pieceToTextureDictionary[blackQueen] = blackQueenImg;
+	pieceToTextureDictionary[blackRook] = blackRookImg;
+	pieceToTextureDictionary[blackBishop] = blackBishopImg;
+	pieceToTextureDictionary[blackKnight] = blackKnightImg;
+	pieceToTextureDictionary[blackPawn] = blackPawnImg;
+	pieceToTextureDictionary[whiteKing] = whiteKingImg;
+	pieceToTextureDictionary[whiteQueen] = whiteQueenImg;
+	pieceToTextureDictionary[whiteRook] = whiteRookImg;
+	pieceToTextureDictionary[whiteBishop] = whiteBishopImg;
+	pieceToTextureDictionary[whiteKnight] = whiteKnightImg;
+	pieceToTextureDictionary[whitePawn] = whitePawnImg;
+}
+
 void Chess::createWindow() {
-	window.create(sf::VideoMode(screenWidth, screenHeight),"Chess-");
+	window.create(sf::VideoMode(screenWidth, screenHeight),"Chess-", sf::Style::Titlebar | sf::Style::Close);
+	initialiseTextures(texturePath);
 }
 void Chess::destroyWindow() {
 	window.close();
@@ -40,6 +85,10 @@ void Chess::update() {
 			case sf::Keyboard::Delete:
 				deleteAtIndexFromPosition();
 				break;
+			case sf::Keyboard::R:
+				/*board.loadFEN(fen);*/
+				board.generatePsuedoLegalMoves();
+				break;
 			}
 		case sf::Event::MouseButtonPressed:
 			switch (event.mouseButton.button) {
@@ -56,10 +105,18 @@ void Chess::update() {
 			}
 		}
 	}
-
+	
 	window.clear();
 	board.updatePieceSprites();
 	drawBoard();
+	if (pieceOnMouse != empty) {
+		sf::Sprite tempSprite;
+		tempSprite.setTexture(pieceToTextureDictionary[pieceOnMouse]);
+		sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+		tempSprite.setPosition(mousePosition.x - 30, mousePosition.y - 30);
+		window.draw(tempSprite);
+	}
+	
 	window.display();
 
 }

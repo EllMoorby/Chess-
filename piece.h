@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "test.h"
+#include "boardData.h"
 
 struct PieceConstructorArgs {
 	unsigned int index;
