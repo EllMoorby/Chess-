@@ -79,6 +79,9 @@ public:
     unsigned int algebraicNotationTo64Index(std::string square);
     void updatePieceSprites();
     void displayBoard();
+    void deleteAtIndex(unsigned int index);
+    Pieces pieceAtIndex(unsigned int index);
+    void addPieceToIndex(unsigned int index, Pieces piece);
     
     bool getDrawBoardOnScreenEnabled();
     std::vector<Piece> getPieceSprites();

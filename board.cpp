@@ -326,3 +326,15 @@ void Board::displayBoard() {
 	}
 	updatePieceSprites();
 }
+
+void Board::deleteAtIndex(unsigned int index) {
+	board[index] = empty;
+}
+
+Pieces Board::pieceAtIndex(unsigned int index) {
+	return board[index];
+}
+
+void Board::addPieceToIndex(unsigned int index, Pieces piece) {
+	board[index] = piece;
+}

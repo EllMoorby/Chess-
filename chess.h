@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+
 struct ChessConstructorArgs {
 	unsigned int screenHeight;
 	unsigned int screenWidth;
@@ -16,6 +17,7 @@ struct ChessConstructorArgs {
 class Chess
 {
 private:
+	Pieces pieceOnMouse;
 	unsigned int screenHeight;
 	unsigned int screenWidth;
 	std::string texturePath;
@@ -26,14 +28,15 @@ private:
 	sf::Sprite boardSprite;
 
 public:
-	//Can be moved to private with getters and setters
 	Chess(const ChessConstructorArgs& args);
 	void start();
 	void update();
 	void createWindow();
 	void destroyWindow();
-	void movePiece();
+	void pickUpPiece();
 	void drawBoard();
-
+	unsigned int findIndexFromOnScreenPosition();
+	void deleteAtIndexFromPosition();
+	void dropPiece();
 };
 
