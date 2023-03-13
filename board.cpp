@@ -56,7 +56,7 @@ void Board::initialiseTextures(std::string texturePath) {
 void Board::loadFEN(std::string fen) {
 	fen.append(" "); // Space Added for Final FEN Split
 
-	std::array<Pieces, 64> board = {
+	board = {
 		empty, empty, empty, empty, empty, empty, empty, empty,
 		empty, empty, empty, empty, empty, empty, empty, empty,
 		empty, empty, empty, empty, empty, empty, empty, empty,
@@ -114,51 +114,51 @@ void Board::loadFEN(std::string fen) {
 				currentIndex += 8;
 				break;
 			case 'k':
-				this->board[currentIndex] = blackKing;
+				board[currentIndex] = blackKing;
 				currentIndex++;
 				break;
 			case 'q':
-				this->board[currentIndex] = blackQueen;
+				board[currentIndex] = blackQueen;
 				currentIndex++;
 				break;
 			case 'r':
-				this->board[currentIndex] = blackRook;
+				board[currentIndex] = blackRook;
 				currentIndex++;
 				break;
 			case 'b':
-				this->board[currentIndex] = blackBishop;
+				board[currentIndex] = blackBishop;
 				currentIndex++;
 				break;
 			case 'n':
-				this->board[currentIndex] = blackKnight;
+				board[currentIndex] = blackKnight;
 				currentIndex++;
 				break;
 			case 'p':
-				this->board[currentIndex] = blackPawn;
+				board[currentIndex] = blackPawn;
 				currentIndex++;
 				break;
 			case 'K':
-				this->board[currentIndex] = whiteKing;
+				board[currentIndex] = whiteKing;
 				currentIndex++;
 				break;
 			case 'Q':
-				this->board[currentIndex] = whiteQueen;
+				board[currentIndex] = whiteQueen;
 				currentIndex++;
 				break;
 			case 'R':
-				this->board[currentIndex] = whiteRook;
+				board[currentIndex] = whiteRook;
 				currentIndex++;
 				break;
 			case 'B':
-				this->board[currentIndex] = whiteBishop;
+				board[currentIndex] = whiteBishop;
 				currentIndex++;
 				break;
 			case 'N':
-				this->board[currentIndex] = whiteKnight;
+				board[currentIndex] = whiteKnight;
 				currentIndex++;
 				break;
 			case 'P':
-				this->board[currentIndex] = whitePawn;
+				board[currentIndex] = whitePawn;
 				currentIndex++;
 				break;
 
