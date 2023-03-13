@@ -86,8 +86,7 @@ void Chess::update() {
 				deleteAtIndexFromPosition();
 				break;
 			case sf::Keyboard::R:
-				/*board.loadFEN(fen);*/
-				board.generatePsuedoLegalMoves();
+				board.loadFEN(fen);
 				break;
 			}
 		case sf::Event::MouseButtonPressed:
