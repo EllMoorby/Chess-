@@ -74,17 +74,29 @@ void Chess::start() {
 
 unsigned int Chess::findIndexFromOnScreenPosition() {
 	sf::Vector2i pos = sf::Mouse::getPosition(window);
-	unsigned int x = pos.x;
-	unsigned int y = pos.y;
+	int x = pos.x;
+	int y = pos.y;
+	if (x < 0 || y < 0) {
+		return 999;
+	}
 
 	x /= 60;
 	y /= 60;
 
+	if (x > 7 || y > 7) {
+		return 999;
+	}
 	unsigned int index = x + 8 * y;
 	return index;
 }
 
 void Chess::deleteAtIndexFromPosition() {
+	unsigned int index = findIndexFromOnScreenPosition();
+	std::cout << index;
+	if (index == 999) {
+		std::cout << "return";
+		return;
+	}
 	board.deleteAtIndex(findIndexFromOnScreenPosition());
 }
 
@@ -93,6 +105,9 @@ void Chess::pickUpPiece() {
 		return;
 	}
 	unsigned int index = findIndexFromOnScreenPosition();
+	if (index == 999) {
+		return;
+	}
 	pieceOnMouse = board.pieceAtIndex(index);
 	board.deleteAtIndex(index);
 }
@@ -101,6 +116,10 @@ void Chess::dropPiece() {
 	if (pieceOnMouse == empty) {
 		return;
 	}
-	board.addPieceToIndex(findIndexFromOnScreenPosition(), pieceOnMouse);
+	unsigned int index = findIndexFromOnScreenPosition();
+	if (index == 999) {
+		return;
+	}
+	board.addPieceToIndex(index, pieceOnMouse);
 	pieceOnMouse = empty;
 }
