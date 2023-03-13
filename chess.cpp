@@ -149,9 +149,7 @@ unsigned int Chess::findIndexFromOnScreenPosition() {
 
 void Chess::deleteAtIndexFromPosition() {
 	unsigned int index = findIndexFromOnScreenPosition();
-	std::cout << index;
 	if (index == 999) {
-		std::cout << "return";
 		return;
 	}
 	board.deleteAtIndex(findIndexFromOnScreenPosition());

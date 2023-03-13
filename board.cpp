@@ -301,6 +301,7 @@ void Board::addPieceToIndex(unsigned int index, Pieces piece) {
 }
 
 std::vector<Move> Board::generatePsuedoLegalMoves() {
+	// For Sliding Pieces add Multiples of the Direction Offsets for the Specific Piece
 	std::vector<Move> psuedoLegalMoves;
 	unsigned int pieceIndex{ 0 };
 
