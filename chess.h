@@ -17,6 +17,7 @@ struct ChessConstructorArgs {
 class Chess
 {
 private:
+	unsigned int indexMovedFrom;
 	std::string fen;
 	std::map<Pieces, sf::Texture> pieceToTextureDictionary;
 	Pieces pieceOnMouse;
@@ -28,6 +29,7 @@ private:
 	Board board;
 	sf::Texture boardImg;
 	sf::Sprite boardSprite;
+	std::vector<Move> legalMoves;
 
 public:
 	Chess(const ChessConstructorArgs& args);

@@ -162,7 +162,9 @@ void Chess::pickUpPiece() {
 	if (index == 999) {
 		return;
 	}
+	legalMoves = board.generatePsuedoLegalMoves();
 	pieceOnMouse = board.pieceAtIndex(index);
+	indexMovedFrom = index;
 	board.deleteAtIndex(index);
 }
 
@@ -174,6 +176,15 @@ void Chess::dropPiece() {
 	if (index == 999) {
 		return;
 	}
-	board.addPieceToIndex(index, pieceOnMouse);
+	for (auto& move : legalMoves) {
+		if (move.startIndex64 == indexMovedFrom && move.finishIndex64 == index) {
+			board.addPieceToIndex(index, pieceOnMouse);
+			
+			pieceOnMouse = empty;
+			return;
+		}
+	}
+	board.addPieceToIndex(indexMovedFrom, pieceOnMouse);
 	pieceOnMouse = empty;
+	
 }

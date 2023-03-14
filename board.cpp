@@ -308,10 +308,18 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 	// Up Down Left Right UpLeft UpRight DownLeft DownRight 
 	std::array<int, 8> directionalOffsets64 = {-8, 8, -1, 1, -9, -7, 7, 9}; 
 	std::array<int, 8> directionalOffsets120 = {-10, 10, -1, 1, -11, -9, 9, 11};
-	
+
+	//Clockwise
 	std::array<int, 8> directionalOffsetsKnight64 = { -15, -6, 10, 17, 15, 6, -10, -17};
 	std::array<int, 8> directionalOffsetsKnight120 = { -19, -8, 12, 21, 19, 8, -12, -21};
-	
+
+	//UpLeft UpRight DownLeft DownRight
+	std::array<int, 8> directionalOffsetsBishop64 = { -9, -7, 7, 9 };
+	std::array<int, 8> directionalOffsetsBishop120 = { -11, -9, 9, 11 };
+
+	//Up Down Left Right
+	std::array<int, 8> directionalOffsetsRook64 = { -8, 8, -1, 1 };
+	std::array<int, 8> directionalOffsetsRook120 = { -10, 10, -1, 1 };
 	for (auto& square : board) {
 
 		if (square == empty) {
@@ -340,6 +348,26 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 				if (finish64Index != 99 && ((board[pieceIndex] * board[finish64Index]) <= 0)) {
 					psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
 				}
+
+			}
+
+			break;
+		case blackBishop:
+		case whiteBishop:
+			for (auto& directionalOffset120 : directionalOffsetsBishop120) {
+				unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120] };
+
+				//Bishop fun, probably another for loop
+
+			}
+
+			break;
+		case blackRook:
+		case whiteRook:
+			for (auto& directionalOffset120 : directionalOffsetsRook120) {
+				unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120] };
+
+				//Rook fun, probably another for loop
 
 			}
 
