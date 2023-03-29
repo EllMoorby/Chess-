@@ -309,6 +309,7 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 	std::array<int, 8> directionalOffsets64 = {-8, 8, -1, 1, -9, -7, 7, 9}; 
 	std::array<int, 8> directionalOffsets120 = {-10, 10, -1, 1, -11, -9, 9, 11};
 
+
 	//Clockwise
 	std::array<int, 8> directionalOffsetsKnight64 = { -15, -6, 10, 17, 15, 6, -10, -17};
 	std::array<int, 8> directionalOffsetsKnight120 = { -19, -8, 12, 21, 19, 8, -12, -21};
@@ -337,7 +338,34 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 		}
 		
 		switch (square) {
-		case blackKing:
+		case blackKing: {
+			for (auto& directionalOffset120 : directionalOffsets120) {
+				unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120] };
+
+				if (finish64Index == 99) {
+					continue;
+				}
+
+				if ((board[pieceIndex] * board[finish64Index]) <= 0) {
+					psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
+				}
+
+			}
+
+			//Castling
+			unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + 2] };
+			if (castlingAvailability.blackKingSide) {
+				
+				if (board[pieceIndex + 1] == empty && board[pieceIndex + 2] == empty) {
+					std::cout << "Can Castle King Side Black" << std::endl;
+					Move castlingMove = { pieceIndex, finish64Index };
+					Move rookCastlingMove = { finish64Index + 1, finish64Index - 1 };
+					castlingMove.castlingPointer = &rookCastlingMove;
+					psuedoLegalMoves.push_back(castlingMove);
+				}
+			}
+			break;
+		}
 		case whiteKing: {
 			for (auto& directionalOffset120 : directionalOffsets120) {
 				unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120] };
@@ -351,6 +379,8 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 				}
 
 			}
+
+			//Castling
 
 			break;
 		}

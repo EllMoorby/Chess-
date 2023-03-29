@@ -16,6 +16,7 @@ struct BoardConstructorArgs {
 struct Move {
     unsigned int startIndex64;
     unsigned int finishIndex64;
+    Move* castlingPointer;
 };
 
 enum MovementOffsets {

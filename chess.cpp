@@ -180,6 +180,10 @@ void Chess::dropPiece() {
 		if (move.startIndex64 == indexMovedFrom && move.finishIndex64 == index) {
 			board.addPieceToIndex(index, pieceOnMouse);
 			
+			if (move.castlingPointer) {
+				board.addPieceToIndex(move.castlingPointer->finishIndex64, );
+			}
+			
 			pieceOnMouse = empty;
 			return;
 		}
