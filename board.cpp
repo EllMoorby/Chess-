@@ -342,7 +342,11 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 			for (auto& directionalOffset120 : directionalOffsets120) {
 				unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120] };
 
-				if (finish64Index != 99 && ((board[pieceIndex] * board[finish64Index]) <= 0)) {
+				if (finish64Index == 99) {
+					continue;
+				}
+
+				if ((board[pieceIndex] * board[finish64Index]) <= 0) {
 					psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
 				}
 
@@ -350,12 +354,17 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 
 			break;
 		}
+
 		case blackKnight:
 		case whiteKnight: {
 			for (auto& directionalOffset120 : directionalOffsetsKnight120) {
 				unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120] };
 
-				if (finish64Index != 99 && ((board[pieceIndex] * board[finish64Index]) <= 0)) {
+				if (finish64Index == 99) {
+					continue;
+				}
+
+				if ((board[pieceIndex] * board[finish64Index]) <= 0) {
 					psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
 				}
 
@@ -493,6 +502,10 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 			for (auto& directionalOffset120 : directionalOffsetsBlackPawn120) {
 				finish64Index = mailbox120[mailbox64[pieceIndex] + directionalOffset120];
 
+				if (finish64Index == 99) {
+					continue;
+				}
+
 				if (board[pieceIndex] * board[finish64Index] < 0) {
 					psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
 				}
@@ -519,6 +532,10 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 			//UpLeft UpRight
 			for (auto& directionalOffset120 : directionalOffsetsWhitePawn120) {
 				finish64Index = mailbox120[mailbox64[pieceIndex] + directionalOffset120];
+				
+				if (finish64Index == 99) {
+					continue;
+				}
 
 				if (board[pieceIndex] * board[finish64Index] < 0) {
 					psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
@@ -529,8 +546,6 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 
 
 		}
-
-		
 
 	pieceIndex++;
 	}
