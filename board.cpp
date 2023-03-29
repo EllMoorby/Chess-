@@ -320,28 +320,38 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 	//Up Down Left Right
 	std::array<int, 8> directionalOffsetsRook64 = { -8, 8, -1, 1 };
 	std::array<int, 8> directionalOffsetsRook120 = { -10, 10, -1, 1 };
+
+	//UpLeft UpRight
+	std::array<int, 8> directionalOffsetsWhitePawn64 = { -9, -7};
+	std::array<int, 8> directionalOffsetsWhitePawn120 = { -11, -9};
+
+	//DownLeft DownRight
+	std::array<int, 8> directionalOffsetsBlackPawn64 = { 7, 9 };
+	std::array<int, 8> directionalOffsetsBlackPawn120 = { 9, 11 };
+
 	for (auto& square : board) {
 
 		if (square == empty) {
 			pieceIndex++;
 			continue;
 		}
+		
 		switch (square) {
 		case blackKing:
-		case whiteKing:
+		case whiteKing: {
 			for (auto& directionalOffset120 : directionalOffsets120) {
 				unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120] };
-				
-				if ( finish64Index != 99 && ((board[pieceIndex] * board[finish64Index]) <= 0)) {
+
+				if (finish64Index != 99 && ((board[pieceIndex] * board[finish64Index]) <= 0)) {
 					psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
 				}
-				
-			}
-			
-			break;
 
+			}
+
+			break;
+		}
 		case blackKnight:
-		case whiteKnight:
+		case whiteKnight: {
 			for (auto& directionalOffset120 : directionalOffsetsKnight120) {
 				unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120] };
 
@@ -352,30 +362,176 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 			}
 
 			break;
+		}
 		case blackBishop:
-		case whiteBishop:
+		case whiteBishop: {
 			for (auto& directionalOffset120 : directionalOffsetsBishop120) {
-				unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120] };
+
 
 				//Bishop fun, probably another for loop
 
+				for (unsigned int scalar = 1; scalar <= 8; scalar++) {
+					unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120 * scalar] };
+
+					if (finish64Index == 99) {
+						break;
+					}
+
+					if (board[finish64Index] * board[pieceIndex] > 0) {
+						break;
+					}
+					psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
+
+					//Checks if the Finish Square is an Opponent Piece
+					if (board[finish64Index] * board[pieceIndex] < 0) {
+						break;
+					}
+				}
+
 			}
 
 			break;
+		}
 		case blackRook:
-		case whiteRook:
+		case whiteRook: {
 			for (auto& directionalOffset120 : directionalOffsetsRook120) {
 				unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120] };
 
-				//Rook fun, probably another for loop
+				for (unsigned int scalar = 1; scalar <= 8; scalar++) {
+					unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120 * scalar] };
+
+					if (finish64Index == 99) {
+						break;
+					}
+
+					if (board[finish64Index] * board[pieceIndex] > 0) {
+						break;
+					}
+					psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
+
+					//Checks if the Finish Square is an Opponent Piece
+					if (board[finish64Index] * board[pieceIndex] < 0) {
+						break;
+					}
+
+				}
 
 			}
 
 			break;
+		}
+		case blackQueen:
+		case whiteQueen: {
+			for (auto& directionalOffset120 : directionalOffsetsBishop120) {
 
+
+				//Bishop fun, probably another for loop
+
+				for (unsigned int scalar = 1; scalar <= 8; scalar++) {
+					unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120 * scalar] };
+
+					if (finish64Index == 99) {
+						break;
+					}
+
+					if (board[finish64Index] * board[pieceIndex] > 0) {
+						break;
+					}
+					psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
+
+					//Checks if the Finish Square is an Opponent Piece
+					if (board[finish64Index] * board[pieceIndex] < 0) {
+						break;
+					}
+				}
+
+			}
+
+			for (auto& directionalOffset120 : directionalOffsetsRook120) {
+				unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120] };
+
+				for (unsigned int scalar = 1; scalar <= 8; scalar++) {
+					unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffset120 * scalar] };
+
+					if (finish64Index == 99) {
+						break;
+					}
+
+					if (board[finish64Index] * board[pieceIndex] > 0) {
+						break;
+					}
+					psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
+
+					//Checks if the Finish Square is an Opponent Piece
+					if (board[finish64Index] * board[pieceIndex] < 0) {
+						break;
+					}
+
+				}
+
+			}
+			break;
+		}
+		case blackPawn: {
+			//Down
+			unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffsets120[1]] };
+
+			if (board[finish64Index] == empty) {
+				psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
+
+				if (pieceIndex >= 8 && pieceIndex <= 15) {
+					finish64Index += directionalOffsets64[1];
+
+					if (board[finish64Index] == empty) {
+						psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
+
+					}
+				}
+			}
+
+			//DownLeft DownRight
+			for (auto& directionalOffset120 : directionalOffsetsBlackPawn120) {
+				finish64Index = mailbox120[mailbox64[pieceIndex] + directionalOffset120];
+
+				if (board[pieceIndex] * board[finish64Index] < 0) {
+					psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
+				}
+			}
+			break;
+		}
+		case whitePawn: {
+			//Up
+			unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + directionalOffsets120[0]] };
+
+			if (board[finish64Index] == empty) {
+				psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
+
+				if (pieceIndex >= 48 && pieceIndex <= 55) {
+					finish64Index += directionalOffsets64[0];
+
+					if (board[finish64Index] == empty) {
+						psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
+
+					}
+				}
+			}
+
+			//UpLeft UpRight
+			for (auto& directionalOffset120 : directionalOffsetsWhitePawn120) {
+				finish64Index = mailbox120[mailbox64[pieceIndex] + directionalOffset120];
+
+				if (board[pieceIndex] * board[finish64Index] < 0) {
+					psuedoLegalMoves.push_back({ pieceIndex, finish64Index });
+				}
+			}
+			break;
+		}
 
 
 		}
+
+		
+
 	pieceIndex++;
 	}
 	return psuedoLegalMoves;
