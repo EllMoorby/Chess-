@@ -179,13 +179,11 @@ void Chess::dropPiece() {
 	for (auto& move : legalMoves) {
 		if (move.startIndex64 == indexMovedFrom && move.finishIndex64 == index) {
 			board.addPieceToIndex(index, pieceOnMouse);
-			
-			
+			std::cout << "Here " << move.castlingPointer;
 			if (move.castlingPointer) {
 				//Add new rook
-				std::cout << move.castlingPointer->startIndex64;
-				board.addPieceToIndex(move.castlingPointer->finishIndex64, board.pieceAtIndex(move.castlingPointer->startIndex64)); //ERROR "move.castlingPointer->startIndex64" returns a large number not the index
-				//Remove old rook
+				std::cout << move.castlingPointer->finishIndex64 << std::endl;
+				board.addPieceToIndex(move.castlingPointer->finishIndex64, board.pieceAtIndex(move.castlingPointer->startIndex64));
 				board.deleteAtIndex(move.castlingPointer->startIndex64);
 			}
 			
