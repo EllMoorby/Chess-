@@ -179,7 +179,7 @@ void Chess::dropPiece() {
 	for (auto& move : legalMoves) {
 		if (move.startIndex64 == indexMovedFrom && move.finishIndex64 == index) {
 			board.addPieceToIndex(index, pieceOnMouse);
-			
+			//TODO
 			if (move.castlingRookMove.castlingRookStartIndex64 != 99 || move.castlingRookMove.castlingRookFinishIndex64 != 99) {
 				//Add new rook
 				board.addPieceToIndex(move.castlingRookMove.castlingRookFinishIndex64, board.pieceAtIndex(move.castlingRookMove.castlingRookStartIndex64));
