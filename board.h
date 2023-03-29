@@ -13,10 +13,17 @@ struct BoardConstructorArgs {
     std::map<Pieces, sf::Texture> pieceToTextureDictionary;
 };
 
+struct CastlingRookMove {
+    unsigned int castlingRookStartIndex64;
+    unsigned int castlingRookFinishIndex64;
+    bool* castlingRight;
+};
+
 struct Move {
     unsigned int startIndex64;
     unsigned int finishIndex64;
-    Move* castlingPointer;
+    CastlingRookMove castlingRookMove = { 99, 99 };
+    
 };
 
 enum MovementOffsets {

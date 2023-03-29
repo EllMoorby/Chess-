@@ -353,15 +353,21 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 			}
 
 			//Castling
-			unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + 2] };
+			
 			if (castlingAvailability.blackKingSide) {
 				
 				if (board[pieceIndex + 1] == empty && board[pieceIndex + 2] == empty) {
-					std::cout << "Can Castle King Side Black " << finish64Index - 1 << std::endl;
-					Move castlingMove = { pieceIndex, finish64Index };
-					Move rookCastlingMove = { finish64Index + 1, finish64Index - 1 };
-					castlingMove.castlingPointer = &rookCastlingMove;
-					psuedoLegalMoves.push_back(castlingMove);
+					
+					unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + 2] };
+					psuedoLegalMoves.push_back({ pieceIndex, finish64Index, {finish64Index + 1, finish64Index - 1, &castlingAvailability.blackKingSide } });
+				}
+			}
+
+			if (castlingAvailability.blackQueenSide) {
+				if (board[pieceIndex - 1] == empty && board[pieceIndex - 2] == empty && board[pieceIndex - 3] == empty) {
+					
+					unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] - 2] };
+					psuedoLegalMoves.push_back({ pieceIndex, finish64Index, {finish64Index - 2 , finish64Index + 1, &castlingAvailability.blackQueenSide} });
 				}
 			}
 			break;
@@ -381,6 +387,23 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 			}
 
 			//Castling
+
+			if (castlingAvailability.whiteKingSide) {
+
+				if (board[pieceIndex + 1] == empty && board[pieceIndex + 2] == empty) {
+
+					unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] + 2] };
+					psuedoLegalMoves.push_back({ pieceIndex, finish64Index, {finish64Index + 1, finish64Index - 1, &castlingAvailability.whiteKingSide } });
+				}
+			}
+
+			if (castlingAvailability.whiteQueenSide) {
+				if (board[pieceIndex - 1] == empty && board[pieceIndex - 2] == empty && board[pieceIndex - 3] == empty) {
+
+					unsigned int finish64Index{ mailbox120[mailbox64[pieceIndex] - 2] };
+					psuedoLegalMoves.push_back({ pieceIndex, finish64Index, {finish64Index - 2 , finish64Index + 1, &castlingAvailability.whiteQueenSide} });
+				}
+			}
 
 			break;
 		}
