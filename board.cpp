@@ -357,7 +357,7 @@ std::vector<Move> Board::generatePsuedoLegalMoves() {
 			if (castlingAvailability.blackKingSide) {
 				
 				if (board[pieceIndex + 1] == empty && board[pieceIndex + 2] == empty) {
-					std::cout << "Can Castle King Side Black" << std::endl;
+					std::cout << "Can Castle King Side Black" << finish64Index + 1 << std::endl;
 					Move castlingMove = { pieceIndex, finish64Index };
 					Move rookCastlingMove = { finish64Index + 1, finish64Index - 1 };
 					castlingMove.castlingPointer = &rookCastlingMove;
