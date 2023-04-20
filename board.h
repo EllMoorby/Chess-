@@ -82,7 +82,7 @@ private:
     std::vector<Piece> pieceSprites;
     
     Colour activeColour;
-	CastlingAvailability castlingAvailability;
+	
 	unsigned int enpassant64Index;
 	unsigned int halfmoveClock;
 	unsigned int fullmoveNumber;
@@ -91,6 +91,7 @@ private:
 public:
     Board();
     Board(const BoardConstructorArgs args);
+    CastlingAvailability castlingAvailability;
     void initialiseTextures(std::string texturePath);
     
     void loadFEN(std::string fen);

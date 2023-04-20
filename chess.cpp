@@ -180,6 +180,30 @@ void Chess::dropPiece() {
 		if (move.startIndex64 == indexMovedFrom && move.finishIndex64 == index) {
 			board.addPieceToIndex(index, pieceOnMouse);
 			//TODO
+			if (pieceOnMouse == blackKing && indexMovedFrom != index) {
+				board.castlingAvailability.blackKingSide = false;
+				board.castlingAvailability.blackQueenSide = false;
+			}
+			else if (pieceOnMouse == whiteKing && indexMovedFrom != index) {
+				board.castlingAvailability.whiteKingSide = false;
+				board.castlingAvailability.whiteQueenSide = false;
+			}
+			if (pieceOnMouse == blackRook && indexMovedFrom != index) {
+				if (indexMovedFrom == (board.algebraicNotationTo64Index("a8"))) {
+					board.castlingAvailability.blackQueenSide = false;
+				}
+				else if (indexMovedFrom == (board.algebraicNotationTo64Index("h8"))) {
+					board.castlingAvailability.blackKingSide = false;
+				}
+			} else if (pieceOnMouse == whiteRook && indexMovedFrom != index) {
+				if (indexMovedFrom == (board.algebraicNotationTo64Index("a1"))) {
+					board.castlingAvailability.whiteQueenSide = false;
+				}
+				else if (indexMovedFrom == (board.algebraicNotationTo64Index("h1"))) {
+					board.castlingAvailability.whiteKingSide = false;
+				}
+			}
+			
 			if (move.castlingRookMove.castlingRookStartIndex64 != 99 || move.castlingRookMove.castlingRookFinishIndex64 != 99) {
 				//Add new rook
 				board.addPieceToIndex(move.castlingRookMove.castlingRookFinishIndex64, board.pieceAtIndex(move.castlingRookMove.castlingRookStartIndex64));
