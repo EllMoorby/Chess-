@@ -195,7 +195,8 @@ void Chess::dropPiece() {
 				else if (indexMovedFrom == (board.algebraicNotationTo64Index("h8"))) {
 					board.castlingAvailability.blackKingSide = false;
 				}
-			} else if (pieceOnMouse == whiteRook && indexMovedFrom != index) {
+			} 
+			else if (pieceOnMouse == whiteRook && indexMovedFrom != index) {
 				if (indexMovedFrom == (board.algebraicNotationTo64Index("a1"))) {
 					board.castlingAvailability.whiteQueenSide = false;
 				}
@@ -203,7 +204,19 @@ void Chess::dropPiece() {
 					board.castlingAvailability.whiteKingSide = false;
 				}
 			}
-			
+			std::cout << index << " " << board.pieceAtIndex(index) << std::endl;
+			if (board.pieceAtIndex(index) == blackRook && index == board.algebraicNotationTo64Index("a8")) {
+				board.castlingAvailability.blackQueenSide = false;
+			} 
+			else if (board.pieceAtIndex(index) == blackRook && index == board.algebraicNotationTo64Index("h8")) {
+				board.castlingAvailability.blackKingSide = false;
+			}
+			if (board.pieceAtIndex(index) == whiteRook && index == board.algebraicNotationTo64Index("a1")) {
+				board.castlingAvailability.whiteQueenSide = false;
+			}
+			else if (board.pieceAtIndex(index) == whiteRook && index == board.algebraicNotationTo64Index("h1")) {
+				board.castlingAvailability.whiteKingSide = false;
+			}
 			if (move.castlingRookMove.castlingRookStartIndex64 != 99 || move.castlingRookMove.castlingRookFinishIndex64 != 99) {
 				//Add new rook
 				board.addPieceToIndex(move.castlingRookMove.castlingRookFinishIndex64, board.pieceAtIndex(move.castlingRookMove.castlingRookStartIndex64));
